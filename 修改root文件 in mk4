@@ -1,0 +1,129 @@
+# -*- coding: utf-8 -*-
+"""
+Created on Sun Nov 18 19:57:18 2018
+
+@author: hzp
+"""
+import os
+import re
+
+#读取aips文件
+faips=open('C:/Users/hzp/Desktop/数据比较I180610C/awe.txt','r')
+fhop=open('C:/Users/hzp/Desktop/数据比较I180610C/hopwe.txt','r')
+c=faips.readlines()
+c1=fhop.readlines()
+data1=[]
+data2=[]
+time1=[]
+time2=[]
+scan=[]
+#aips
+for i in range(1,len(c),1):   
+    for word in c[i].split():
+         word=word.strip()
+         data1.append(word)
+for j in range(0,len(c)-1):
+    time1.append(data1[0+j*9].split('-10-')[1])
+for j in range(0,len(c)-1) :    
+    time1[j]=time1[j].replace(':','h',1).replace(':','m',1).replace(':','s',1)+'s' 
+#hops    
+for i in range(0,len(c1),1):   
+    for word in c1[i].split():
+         word=word.strip()
+         data2.append(word)
+for j in range(0,len(c1)):
+    l='2018y161d'+data2[1+j*9]+'h'+data2[2+j*9]+'m'+data2[3+j*9]+'s'
+    scanid=data2[0+j*9]
+    time2.append(l)
+    
+
+
+
+
+
+
+
+
+
+#进入数据文件目录
+
+f=os.listdir(r'C:/Users/hzp/Desktop/I180610C/1234')
+fid=[]
+for i in range(0,len(f)):
+    if f[i][-1] == 's' :
+        continue
+    elif  f[i][-1] == 'n':
+        continue
+    elif  f[i][-1] == 'x':
+        continue
+    else :
+        fid.append(f[i])
+        
+#获取root目录并打开文件
+for I in range(0,len(fid)):
+    f1=os.listdir(r'C:/Users/hzp/Desktop/I180610C/1234/'+fid[I]) 
+    for i in range(0,len(f1)):
+        if len(f1[i].split('.')[0]) > 2:
+            dir=f1[i]
+    #    if 'OJ287' in f1[i]:
+    #        dir=f1[i]
+    #        break
+    #    elif 'OQ208' in f1[i]:
+    #        dir=f1[i]
+    #        break
+    #    else:
+    #        dir=f1[0]
+    f2=open('C:/Users/hzp/Desktop/I180610C/1234/'+fid[I]+'/'+dir,'r')
+    #f3=open('C:/Users/hzp/Desktop/I180609A/I180609A/1234/'+fid[1]+'/'+f1[0],'w')
+    k=f2.readlines()
+    #读取文件
+    #k1=[]     
+    for i in range(0,len(k)):
+        if k[i] == '$SCHED;\n':
+            a=i
+        if k[i] == 'endscan;\n':
+            b=i
+    time=k[a+2].strip().split('=')[1].split(';')[0].strip()
+    #time= re.sub('[ydhsm]',':',time).split(':')
+    ref_time=k[b-1].strip().split('=')[1].strip(';') .strip() 
+    ref_time=re.sub('[ydhsm]',':',ref_time).split(':')
+    for i in range(0,len(time2)):
+        if time == str(time2[i]):
+            k[b-1]='     fourfit_reftime = 2018y161d'+time1[i]+';\n'
+            f3=open('C:/Users/hzp/Desktop/I180610C/1234/'+fid[I]+'/'+dir,'w')
+            for j in range(0,len(k)):
+                f3.write(k[j])
+        else:
+            continue
+            
+        f3.close()
+    f2.close()        
+    
+
+##读取aips文件
+#faips=open('C:/Users/hzp/Desktop/数据比较I180609A/sy-jl.txt','r+')
+##fhop=open('C:/Users/hzp/Desktop/数据比较I180609A/hopwl.txt','w+')
+#c=faips.readlines()
+##c1=fhop.readlines()
+#data1=[]
+##data2=[]
+#time1=[]
+##time2=[]
+#for i in range(1,len(c),1):   
+#    for word in c[i].split():
+#         word=word.strip()
+#         data1.append(word)
+#for j in range(0,len(c)-1):
+#    time1.append(data1[0+j*9].split('-09-')[1])
+#for j in range(0,len(c)-1) :    
+#    time1[j]=time1[j].replace(':','h',1).replace(':','m',1).replace(':','s',1)+'s' 
+
+#修改文件按
+#f3=open('C:/Users/hzp/Desktop/数据比较I180609A/tex.txt','w+')
+#k[b-1]='     fourfit_reftime = 2018y160d'+time1[1]+';\n'
+#f3=open('C:/Users/hzp/Desktop/I180609A/I180609A/1234/'+fid[1]+'/'+f1[0],'w')
+#for i in range(0,len(k)):
+#    f3.write(k[i])   
+#    
+#f3.close()
+         
