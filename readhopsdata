@@ -1,0 +1,174 @@
+# -*- coding: utf-8 -*-
+"""
+Spyder Editor
+
+This is a temporary script file.
+"""
+#from datetime import datetime
+#import matplotlib.dates as mdates
+#import time
+#import matplotlib.pyplot as plt
+
+
+
+
+
+#读取数据文件（hops输出）
+f=open('C:/Users/hzp/Desktop/数据比较I180610C/we.out','r')
+
+fnew=open('C:/Users/hzp/Desktop/数据比较I180610C/hop1.txt','w+')
+#fwl=open('C:/Users/hzp/Desktop/数据比较I180609A/hopwl.txt','w+')
+#fel=open('C:/Users/hzp/Desktop/数据比较I180609A/hoptel.txt','w+')
+fwe=open('C:/Users/hzp/Desktop/数据比较I180610C/hopwe1.txt','w+')
+
+
+k=f.readlines()
+#定义各个数据数组
+scan=[]
+time=[]
+source=[]
+bs=[]
+snr=[]
+gd=[] 
+drate=[]
+data=[]
+#读取所有数据存入data数组
+for i in range(3,len(k),1):   
+    for word in k[i].split():
+         word=word.strip()
+         data.append(word)
+    #print(data)
+        
+#print(data)
+#store every type
+t=[]
+for j in range(0,len(k)-3):
+    scan.append(data[8+j*43].split('00')[1])
+    time.append(data[11+j*43].split('-')[1])
+    source.append(data[13+j*43])
+    bs.append(data[14+j*43])
+    snr.append(data[20+j*43])
+    #sbd.append(data[24+j*43])
+    gd.append((data[39+j*43]))
+    drate.append((data[38+j*43]))
+   
+for s in range(0,len(k)-3):
+    for t in range(0,len(k)-4):
+        if scan[t]>scan[t+1]:
+            scan[t],scan[t+1]=scan[t+1],scan[t]
+            time[t],time[t+1]=time[t+1],time[t]
+            source[t],source[t+1]=source[t+1],source[t]
+            bs[t],bs[t+1]=bs[t+1],bs[t]
+            snr[t],snr[t+1]=snr[t+1],snr[t]
+            gd[t],gd[t+1]=gd[t+1],gd[t]
+            drate[t],drate[t+1]=drate[t+1],drate[t]
+
+##写各个基线文件
+for k in range(0,len(k)-3):    
+#   if bs[k] == 'WL':
+#       fwl.write(scan[k])
+#       fwl.write('  ')
+#       fwl.write(time[k][0:2]+' '+time[k][2:4]+' '+time[k][4:6])
+#       fwl.write('  ')
+#       fwl.write(source[k].rjust(8))
+#       fwl.write('  ')
+#       fwl.write(bs[k])
+#       fwl.write('  ')
+#       fwl.write(snr[k])
+#       fwl.write('  ')
+#       fwl.write('  ')
+#       fwl.write(gd[k].rjust(13))
+#       fwl.write('  ')
+#       fwl.write(drate[k].rjust(12))
+#       fwl.write('\n')
+#   
+#   elif bs[k] == 'eL':
+#            fel.write(scan[k])
+#            fel.write('  ')
+#            fel.write(time[k][0:2]+' '+time[k][2:4]+' '+time[k][4:6])
+#            fel.write('  ')
+#            fel.write(source[k].rjust(8))
+#            fel.write('  ')
+#            fel.write(bs[k])
+#            fel.write('  ')
+#            fel.write(snr[k])
+#            fel.write('  ')
+#            fel.write('  ')
+#            fel.write(gd[k].rjust(13))
+#            fel.write('  ')
+#            fel.write(drate[k].rjust(12))
+#            fel.write('\n')
+#   else:
+       fwe.write(scan[k])
+       fwe.write('  ')
+       fwe.write(time[k][0:2]+' '+time[k][2:4]+' '+time[k][4:6])
+       fwe.write('  ')
+       fwe.write(source[k].rjust(8))
+       fwe.write('  ')
+       fwe.write(bs[k])
+       fwe.write('  ')
+       fwe.write(snr[k])
+       fwe.write('  ')
+       fwe.write('  ')
+       fwe.write(gd[k].rjust(13))
+       fwe.write('  ')
+       fwe.write(drate[k].rjust(12))
+       fwe.write('\n')
+        
+        
+    
+        
+    
+    
+    
+    
+    
+    
+    
+    
+
+
+
+#格式化写全部文件  
+for k in range(0,len(scan)):
+     fnew.write(scan[k])
+     fnew.write('  ')
+     fnew.write(time[k][0:2]+' '+time[k][2:4]+' '+time[k][4:6])
+     fnew.write('  ')
+    #fnew.write('{0:8}'.format(source[k]).rjust(8))
+     fnew.write(source[k].rjust(8))
+     fnew.write('  ')
+     fnew.write(bs[k])
+     fnew.write('  ')
+     fnew.write(snr[k])
+     fnew.write('  ')
+    #fnew.write(sbd[k].rjust(6))
+     fnew.write('  ')
+     fnew.write(gd[k].rjust(12))
+     fnew.write('  ')
+    #fnew.write('{0:8}'.format(drate[k]))
+     fnew.write(drate[k].rjust(12))
+     fnew.write('\n')
+   
+##    
+##    
+##    
+##    
+##    
+##    
+##  
+#fnew.close()        
+f.close()
+#fwl.close()
+#fel.close()
+fwe.close()     
+    
+    
+    
+    
+    
+    
+    
+    
+
+    
